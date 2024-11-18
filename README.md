@@ -148,11 +148,45 @@ To use ROS 2 to control the robot, follow these additional steps:
    source devel/setup.bash
    ```
 
-### Step 3: Start the Bridge
-- Run the bridge in a terminal:
+### Step 3: Prepare Shells
+- Open **three terminal shells** and source the appropriate environments:
+  1. **Shell 1**:
+     ```bash
+     source /opt/ros/noetic/setup.bash
+     ```
+     - Use this shell for ROS 1 operations.
+  2. **Shell 2**:
+     ```bash
+     source /opt/ros/noetic/setup.bash
+     source /opt/ros/foxy/setup.bash
+     ```
+     - Use this shell to run the ROS 1 Bridge.
+  3. **Shell 3**:
+     ```bash
+     source /opt/ros/foxy/setup.bash
+     ```
+     - Use this shell for ROS 2 operations.
+
+### Step 4: Start the Bridge
+- Run the bridge in the terminal with both Noetic and Foxy sourced:
   ```bash
   ros2 run ros1_bridge parameter_bridge
   ```
+
+### Step 5: Verify and Test
+- In the ROS 2 shell, test functionality:
+  - **Move the robot**:
+    ```bash
+    ros2 run teleop_twist_keyboard teleop_twist_keyboard
+    ```
+  - **View camera feed**:
+    ```bash
+    ros2 run rqt_image_view rqt_image_view
+    ```
+  - **Visualize laser scan and TF in RViz2**:
+    ```bash
+    rviz2
+    ```
 
 ---
 
