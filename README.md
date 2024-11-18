@@ -6,12 +6,14 @@ Welcome to the **ROSbot Tutorials** repository! This repository contains detaile
 
 ## 📚 Table of Contents
 
-1. [Prerequisites](#-prerequisites)
-2. [Getting Started](#-getting-started)
-3. [ROS 2 Users](#-ros-2-users)
-4. [Support and Troubleshooting](#-support-and-troubleshooting)
+1. [Prerequisites](#prerequisites)
+2. [Getting Started](#getting-started)
+3. [ROS 2 Users](#ros-2-users)
+4. [Support and Troubleshooting](#support-and-troubleshooting)
 
 ---
+
+<a name="prerequisites"></a>
 
 ## 🛠 Prerequisites
 
@@ -34,6 +36,8 @@ Before you begin, ensure you meet the following requirements:
 > Ensure your hardware and software setup meets the course's requirements to avoid issues during the project.
 
 ---
+
+<a name="getting-started"></a>
 
 ## 🚀 Getting Started
 
@@ -92,6 +96,8 @@ Before you begin, ensure you meet the following requirements:
 
 ---
 
+<a name="ros-2-users"></a>
+
 ## 🤖 ROS 2 Users
 
 To use ROS 2 to control the robot, follow these additional steps:
@@ -118,8 +124,8 @@ To use ROS 2 to control the robot, follow these additional steps:
      <rosparam command="load" file="/home/omotoye/catkin_ws/src/load_params/params/topics.yaml"/>
    </launch>
    ```
-   > [!NOTE]  
-   > Use `pwd` to confirm the correct file path to `topics.yaml`.
+> [!NOTE]  
+> Use `pwd` to confirm the correct file path to `topics.yaml`.
 
 3. Add the following to `params/topics.yaml`:
    ```yaml
@@ -132,8 +138,8 @@ To use ROS 2 to control the robot, follow these additional steps:
        { topic: /scan, type: sensor_msgs/msg/LaserScan, queue_size: 50 },
      ]
    ```
-   > [!IMPORTANT]  
-   > Ensure the correct message types and queue sizes for your application.
+> [!IMPORTANT]  
+> Ensure the correct message types and queue sizes for your application.
 
 4. Compile the workspace:
    ```bash
@@ -149,6 +155,8 @@ To use ROS 2 to control the robot, follow these additional steps:
   ```
 
 ---
+
+<a name="support-and-troubleshooting"></a>
 
 ## 🛠 Support and Troubleshooting
 
