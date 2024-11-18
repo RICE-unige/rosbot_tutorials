@@ -1,4 +1,3 @@
-
 # ROSbot Tutorials
 
 Welcome to the **ROSbot Tutorials** repository! This repository contains detailed instructions for working with the ROSbot 2.0 to complete assignment projects and classwork in the **Experimental Robotics** course 🚀.
@@ -7,11 +6,10 @@ Welcome to the **ROSbot Tutorials** repository! This repository contains detaile
 
 ## 📚 Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Getting Started](#getting-started)
-3. [Assignments and Projects](#assignments-and-projects)
-4. [Repository Structure](#repository-structure)
-5. [Support and Troubleshooting](#support-and-troubleshooting)
+1. [Prerequisites](#-prerequisites)
+2. [Getting Started](#-getting-started)
+3. [ROS 2 Users](#-ros-2-users)
+4. [Support and Troubleshooting](#-support-and-troubleshooting)
 
 ---
 
@@ -32,6 +30,9 @@ Before you begin, ensure you meet the following requirements:
 ### Software:
 - **ROS 1** (Noetic or Melodic) and **ROS 2 Foxy** installed on your computer.
 
+> [!IMPORTANT]  
+> Ensure your hardware and software setup meets the course's requirements to avoid issues during the project.
+
 ---
 
 ## 🚀 Getting Started
@@ -41,6 +42,9 @@ Before you begin, ensure you meet the following requirements:
    - **WiFi Password**: `06537900605465042712`
 2. Turn on the ROSbot and wait for about **2 minutes** for it to boot up.
 3. Copy the **IP Address** written on the robot. This will be referred to as `<ROBOT_IP>`.
+
+> [!NOTE]  
+> Ensure your laptop is on the same WiFi network as the ROSbot to establish a connection.
 
 ### Step 2: SSH into the ROSbot
 1. Open a terminal and run the following command to SSH into the robot:
@@ -81,43 +85,24 @@ Before you begin, ensure you meet the following requirements:
    ```
    - Ensure you **DO NOT** run `roscore` on your laptop, as the ROSbot is the ROS Master.
 
+> [!CAUTION]  
+> Running `roscore` on your laptop while connected to the ROSbot will cause conflicts with the ROSbot's master node.
+
 3. You can now use your ROS workspace on your laptop to control the robot.
 
 ---
 
-## ROS 2 Users
+## 🤖 ROS 2 Users
 
 To use ROS 2 to control the robot, follow these additional steps:
 
 ### Step 1: Install ROS 2 Foxy
 - Follow the instructions [here](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html) to install ROS 2 Foxy.
 
-### Step 2: Install `ros1_bridge`
-- Install the `ros1_bridge` package:
-  ```bash
-  sudo apt install ros-foxy-ros1-bridge
-  ```
+> [!TIP]  
+> Install the `ros1_bridge` package to facilitate communication between ROS 1 and ROS 2.
 
-### Step 3: Prepare Shells
-- Open **three terminal shells** and source the appropriate environments:
-  1. **Shell 1**:
-     ```bash
-     source /opt/ros/noetic/setup.bash
-     ```
-     - Use this shell for ROS 1 operations.
-  2. **Shell 2**:
-     ```bash
-     source /opt/ros/noetic/setup.bash
-     source /opt/ros/foxy/setup.bash
-     ```
-     - Use this shell to run the ROS 1 Bridge.
-  3. **Shell 3**:
-     ```bash
-     source /opt/ros/foxy/setup.bash
-     ```
-     - Use this shell for ROS 2 operations.
-
-### Step 4: Set Up `parameter_bridge`
+### Step 2: Set Up `parameter_bridge`
 1. Create a ROS 1 workspace:
    ```bash
    mkdir -p ~/catkin_ws/src
@@ -133,7 +118,9 @@ To use ROS 2 to control the robot, follow these additional steps:
      <rosparam command="load" file="/home/omotoye/catkin_ws/src/load_params/params/topics.yaml"/>
    </launch>
    ```
-   NB: Change the file path in the rosparam command, run `pwd` to get the path of the file `topics.yaml`
+   > [!NOTE]  
+   > Use `pwd` to confirm the correct file path to `topics.yaml`.
+
 3. Add the following to `params/topics.yaml`:
    ```yaml
    topics:
@@ -145,38 +132,21 @@ To use ROS 2 to control the robot, follow these additional steps:
        { topic: /scan, type: sensor_msgs/msg/LaserScan, queue_size: 50 },
      ]
    ```
-   - Add additional topics as needed with their correct message types.
+   > [!IMPORTANT]  
+   > Ensure the correct message types and queue sizes for your application.
+
 4. Compile the workspace:
    ```bash
    cd ~/catkin_ws/
    catkin_make
    source devel/setup.bash
    ```
-5. Launch the parameter file:
-   ```bash
-   roslaunch load_params load_params.launch
-   ```
 
-### Step 5: Start the Bridge
-- Go to the shell with both Noetic and Foxy sourced and run:
+### Step 3: Start the Bridge
+- Run the bridge in a terminal:
   ```bash
   ros2 run ros1_bridge parameter_bridge
   ```
-
-### Step 6: Verify and Test
-- In the ROS 2 shell, test functionality:
-  - Move the robot:
-    ```bash
-    ros2 run teleop_twist_keyboard teleop_twist_keyboard
-    ```
-  - View camera feed:
-    ```bash
-    ros2 run rqt_image_view rqt_image_view
-    ```
-  - Visualize laser scan and TF in RViz2:
-    ```bash
-    rviz2
-    ```
 
 ---
 
@@ -187,3 +157,9 @@ If you encounter any issues:
 - Reach out to the tutors on Teams:
   - Alice Nardelli
   - Omotoye Shamsudeen Adekoya
+- Open an issue on the GitHub repository.
+
+> [!WARNING]  
+> Do not attempt to reconfigure the ROSbot's hardware/software unless instructed by a tutor or professor.
+
+---
