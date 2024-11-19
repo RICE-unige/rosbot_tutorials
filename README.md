@@ -30,7 +30,7 @@ Before you begin, ensure you meet the following requirements:
     - Dual Boot PC
 
 ### Software:
-- **ROS 1** (Noetic or Melodic) and **ROS 2 Foxy** installed on your computer.
+- **ROS 1 Noetic** and **ROS 2 Foxy** installed on your computer.
 
 > [!IMPORTANT]  
 > Ensure your hardware and software setup meets the course's requirements to avoid issues during the project.
@@ -94,6 +94,27 @@ Before you begin, ensure you meet the following requirements:
 
 3. You can now use your ROS workspace on your laptop to control the robot.
 
+### Step 5: Verify and Test
+
+- **Move the robot**:
+  ```bash
+  rosrun teleop_twist_keyboard teleop_twist_keyboard
+  ```
+- **View camera feed**:
+  ```bash
+  rosrun image_view image_view image:=/camera/rgb/image_raw _image_transport:=compressed
+  ```
+- **Visualize laser scan and TF in RViz**:
+  ```bash
+  rviz
+  ```
+
+> [!NOTE]  
+> If any of these commands fail due to missing packages, install them using:
+> ```bash
+> sudo apt install ros-noetic-PACKAGE_NAME
+> ```
+
 ---
 
 <a name="ros-2-users"></a>
@@ -105,10 +126,13 @@ To use ROS 2 to control the robot, follow these additional steps:
 ### Step 1: Install ROS 2 Foxy
 - Follow the instructions [here](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html) to install ROS 2 Foxy.
 
-> [!TIP]  
-> Install the `ros1_bridge` package to facilitate communication between ROS 1 and ROS 2.
+### Step 2: Install the `ros1_bridge` Package
+Install the `ros1_bridge` package to enable communication between ROS 1 and ROS 2:
+```bash
+sudo apt install ros-foxy-ros1-bridge
+```
 
-### Step 2: Set Up `parameter_bridge`
+### Step 3: Set Up `parameter_bridge`
 1. Create a ROS 1 workspace:
    ```bash
    mkdir -p ~/catkin_ws/src
@@ -148,7 +172,7 @@ To use ROS 2 to control the robot, follow these additional steps:
    source devel/setup.bash
    ```
 
-### Step 3: Prepare Shells
+### Step 4: Prepare Shells
 - Open **three terminal shells** and source the appropriate environments:
   1. **Shell 1**:
      ```bash
@@ -167,26 +191,32 @@ To use ROS 2 to control the robot, follow these additional steps:
      ```
      - Use this shell for ROS 2 operations.
 
-### Step 4: Start the Bridge
+### Step 5: Start the Bridge
 - Run the bridge in the terminal with both Noetic and Foxy sourced:
   ```bash
   ros2 run ros1_bridge parameter_bridge
   ```
 
-### Step 5: Verify and Test
-- In the ROS 2 shell, test functionality:
-  - **Move the robot**:
-    ```bash
-    ros2 run teleop_twist_keyboard teleop_twist_keyboard
-    ```
-  - **View camera feed**:
-    ```bash
-    ros2 run rqt_image_view rqt_image_view
-    ```
-  - **Visualize laser scan and TF in RViz2**:
-    ```bash
-    rviz2
-    ```
+### Step 6: Verify and Test
+
+- **Move the robot**:
+  ```bash
+  ros2 run teleop_twist_keyboard teleop_twist_keyboard
+  ```
+- **View camera feed**:
+  ```bash
+  ros2 run rqt_image_view rqt_image_view
+  ```
+- **Visualize laser scan and TF in RViz2**:
+  ```bash
+  rviz2
+  ```
+
+> [!NOTE]  
+> If any of these commands fail due to missing packages, install them using:
+> ```bash
+> sudo apt install ros-foxy-PACKAGE_NAME
+> ```
 
 ---
 
