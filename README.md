@@ -145,11 +145,9 @@ sudo apt install ros-foxy-ros1-bridge
 2. Add the following code to `launch/load_params.launch`:
    ```xml
    <launch>
-     <rosparam command="load" file="/home/omotoye/catkin_ws/src/load_params/params/topics.yaml"/>
+     <rosparam command="load" file="$(find load_params)/params/topics.yaml"/>
    </launch>
    ```
-> [!NOTE]  
-> Use `pwd` to confirm the correct file path to `topics.yaml`.
 
 3. Add the following to `params/topics.yaml`:
    ```yaml
@@ -191,13 +189,24 @@ sudo apt install ros-foxy-ros1-bridge
      ```
      - Use this shell for ROS 2 operations.
 
-### Step 5: Start the Bridge
+### Step 5: Start the Parameter Server
+- In the shell where ROS 1 was sourced, start the parameter server:
+  ```bash
+  roslaunch load_params load_params.launch
+  ```
+
+### Step 6: Start the Bridge
 - Run the bridge in the terminal with both Noetic and Foxy sourced:
   ```bash
   ros2 run ros1_bridge parameter_bridge
   ```
 
-### Step 6: Verify and Test
+---
+
+## Verify and Test
+
+> [!NOTE]
+> This commands should be ran in the shell where only ROS 2 Foxy is sourced
 
 - **Move the robot**:
   ```bash
