@@ -9,7 +9,8 @@ Welcome to the **ROSbot Tutorials** repository! This repository contains detaile
 1. [Prerequisites](#prerequisites)
 2. [Getting Started](#getting-started)
 3. [ROS 2 Users](#ros-2-users)
-4. [Support and Troubleshooting](#support-and-troubleshooting)
+4. [Connecting via VPN](#connecting-via-vpn)
+5. [Support and Troubleshooting](#support-and-troubleshooting)
 
 ---
 
@@ -203,33 +204,84 @@ sudo apt install ros-foxy-ros1-bridge
 
 ---
 
-## Verify and Test
+## 🌐 Connecting via VPN
 
-> [!NOTE]
-> This commands should be ran in the shell where only ROS 2 Foxy is sourced
+To access the ROSbot remotely over the internet through a VPN connection, follow these steps:
 
-- **Move the robot**:
-  ```bash
-  ros2 run teleop_twist_keyboard teleop_twist_keyboard
-  ```
-- **View camera feed**:
-  ```bash
-  ros2 run rqt_image_view rqt_image_view
-  ```
-- **Visualize laser scan and TF in RViz2**:
-  ```bash
-  rviz2
-  ```
+### Step 1: Request an Authentication Code
+1. **Contact the Teaching Assistants (TAs)** to request an authentication code for the VPN.
+2. You will receive a personalized auth key that can only be used once and will expire in **7 days** if not used.
 
-> [!NOTE]  
-> If any of these commands fail due to missing packages, install them using:
-> ```bash
-> sudo apt install ros-foxy-PACKAGE_NAME
-> ```
+### Step 2: Set Up the VPN Connection
+> [!INFO]
+> Ensure you are connected to the internet (e.g., via **Eduroam** or any other internet connection) before proceeding. Do **not** connect solely to the FRITZ!Box network, as it does not provide internet access required for the VPN.
+
+1. **Ensure you are connected to the internet** (not just the FRITZ!Box network) before proceeding.
+2. Open a terminal and set your authentication key:
+   ```bash
+   TS_AUTH_KEY=<auth_key_from_TAs>
+   ```
+3. Verify that the auth key is saved successfully:
+   ```bash
+   echo $TS_AUTH_KEY
+   ```
+   - Ensure the output matches your provided auth key.
+
+> [!IMPORTANT]
+> Do **not** run the setup commands inside a Docker container. This setup is intended for native Ubuntu environments, WSL, virtual machines, or dual-boot systems.
+
+4. Run the following command to install the VPN client and establish the connection:
+   ```bash
+   curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key=$TS_AUTH_KEY
+   ```
+
+### Step 3: Verify VPN Connection
+1. Obtain your VPN IP address:
+   ```bash
+   hostname -I
+   ```
+   - Look for an IP address starting with `100.xxx.xxx.xxx`.
+
+### Step 4: Continue with ROSbot Connection
+1. **SSH into the ROSbot using its VPN IP**:
+   ```bash
+   ssh husarion@<ROS_VPN_IP>
+   ```
+   - **Password**: `husarion`
+
+2. **Verify the connection**:
+   - Once connected, you should have access to the ROSbot's terminal over the VPN.
+
+3. **Configure Your Environment**:
+   - Set the ROS Master URI to point to the ROSbot's VPN IP:
+     ```bash
+     export ROS_MASTER_URI=http://<ROS_VPN_IP>:11311
+     export ROS_IP=<YOUR_VPN_IP>
+     ```
+   - Add these environment variables to your `.bashrc` to make them persistent:
+     ```bash
+     echo "export ROS_MASTER_URI=http://<ROS_VPN_IP>:11311" >> ~/.bashrc
+     echo "export ROS_IP=<YOUR_VPN_IP>" >> ~/.bashrc
+     source ~/.bashrc
+     ```
+
+### Additional Notes:
+> [!INFO]  
+> Ensure that your machine remains connected to the internet while using the VPN. Disruptions in your internet connection may affect the VPN stability.
+
+### Troubleshooting
+- **Cannot connect to VPN**:
+  - Ensure that the VPN client is properly installed and running.
+  - Check your internet connection and try restarting the VPN client.
+  
+- **SSH connection issues**:
+  - Verify that the ROSbot is powered on and connected to the VPN.
+  - Confirm that you are using the correct VPN IP address.
+
+> [!WARNING]  
+> Do **not** share your VPN credentials with others. If you encounter persistent issues, contact the course instructors or TAs.
 
 ---
-
-<a name="support-and-troubleshooting"></a>
 
 ## 🛠 Support and Troubleshooting
 
