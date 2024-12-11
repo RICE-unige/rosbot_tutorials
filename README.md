@@ -213,15 +213,14 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
 2. You will receive a personalized auth key that can only be used once and will expire in **7 days** if not used.
 
 ### Step 2: Set Up the VPN Connection
-> [!INFO]
+> [!NOTE]
 > Ensure you are connected to the internet (e.g., via **Eduroam** or any other internet connection) before proceeding. Do **not** connect solely to the FRITZ!Box network, as it does not provide internet access required for the VPN.
 
-1. **Ensure you are connected to the internet** (not just the FRITZ!Box network) before proceeding.
-2. Open a terminal and set your authentication key:
+1. Open a terminal and set your authentication key:
    ```bash
    TS_AUTH_KEY=<auth_key_from_TAs>
    ```
-3. Verify that the auth key is saved successfully:
+2. Verify that the auth key is saved successfully:
    ```bash
    echo $TS_AUTH_KEY
    ```
@@ -230,7 +229,7 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
 > [!IMPORTANT]
 > Do **not** run the setup commands inside a Docker container. This setup is intended for native Ubuntu environments, WSL, virtual machines, or dual-boot systems.
 
-4. Run the following command to install the VPN client and establish the connection:
+3. Run the following command to install the VPN client and establish the connection:
    ```bash
    curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up --auth-key=$TS_AUTH_KEY
    ```
@@ -266,7 +265,7 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
      ```
 
 ### Additional Notes:
-> [!INFO]  
+> [!NOTE]  
 > Ensure that your machine remains connected to the internet while using the VPN. Disruptions in your internet connection may affect the VPN stability.
 
 ### Troubleshooting
