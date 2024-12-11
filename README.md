@@ -214,7 +214,7 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
 
 ### Step 2: Set Up the VPN Connection
 > [!NOTE]
-> Ensure you are connected to the internet (e.g., via **Eduroam** or any other internet connection) before proceeding. Do **not** connect solely to the FRITZ!Box network, as it does not provide internet access required for the VPN.
+> Ensure you are connected to the internet (e.g., via **Eduroam** or any other internet connection) before proceeding. Do **not** connect to the FRITZ!Box network, as it does not provide internet access required for the VPN.
 
 1. Open a terminal and set your authentication key:
    ```bash
@@ -264,21 +264,42 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
      source ~/.bashrc
      ```
 
-### Additional Notes:
-> [!NOTE]  
-> Ensure that your machine remains connected to the internet while using the VPN. Disruptions in your internet connection may affect the VPN stability.
+### Optional: Using WSLg for VPN Setup
 
-### Troubleshooting
-- **Cannot connect to VPN**:
-  - Ensure that the VPN client is properly installed and running.
-  - Check your internet connection and try restarting the VPN client.
-  
-- **SSH connection issues**:
-  - Verify that the ROSbot is powered on and connected to the VPN.
-  - Confirm that you are using the correct VPN IP address.
+> [!TIP]
+> **WSLg (Windows Subsystem for Linux GUI)** allows you to run Linux GUI applications directly on Windows, providing an integrated desktop experience. This is useful if you prefer or need to use Linux tools alongside your Windows environment without setting up a separate virtual machine.
 
-> [!WARNING]  
-> Do **not** share your VPN credentials with others. If you encounter persistent issues, contact the course instructors or TAs.
+> [!IMPORTANT]
+> To use WSLg, ensure you are running **Windows 10** (version 2004 and higher) or **Windows 11**. Make sure your Windows installation is up to date.
+
+#### Step 1: Install WSLg with Ubuntu 20.04
+1. **Install WSLg** by running the following command in an elevated PowerShell or Command Prompt:
+   ```powershell
+   wsl --install -d Ubuntu-20.04
+   ```
+2. Follow the prompts to complete the Ubuntu 20.04 installation, setting up your Linux username and password.
+
+3. **Launch Ubuntu 20.04** by searching for "Ubuntu 20.04" in the Start Menu and clicking on the application.
+
+
+> [!NOTE]
+> You can also start Ubuntu 20.04 from PowerShell by setting it as the default distro and using the `bash` command:
+> 1. Set Ubuntu 20.04 as the default WSL distro:
+>    ```powershell
+>    wsl -s Ubuntu-20.04
+>    ```
+> 2. Launch Ubuntu 20.04 by simply entering `bash` in PowerShell:
+>    ```powershell
+>    bash
+>    ```
+>    - This will open the Ubuntu 20.04 terminal.
+
+#### Step 2: Proceed with VPN Setup in WSLg
+1. Open the Ubuntu terminal from the Start Menu or PowerShell.
+2. Follow **Step 2: Set Up the VPN Connection** as described above within the Ubuntu terminal.
+
+> [!IMPORTANT]
+> Ensure that you are using WSLg with Ubuntu 20.04 and not running the VPN setup commands inside a Docker container.
 
 ---
 
