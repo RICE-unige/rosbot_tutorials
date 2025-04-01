@@ -9,8 +9,9 @@ Welcome to the **ROSbot Tutorials** repository! This repository contains detaile
 1. [Prerequisites](#prerequisites)
 2. [Getting Started](#getting-started)
 3. [ROS 2 Users](#ros-2-users)
-4. [Connecting via VPN](#connecting-via-vpn)
-5. [Support and Troubleshooting](#support-and-troubleshooting)
+4. [Using the ROS2 Humble Bridge (Docker)](#using-the-ros2-humble-bridge-docker)
+5. [Connecting via VPN](#connecting-via-vpn)
+6. [Support and Troubleshooting](#support-and-troubleshooting)
 
 ---
 
@@ -149,7 +150,6 @@ sudo apt install ros-foxy-ros1-bridge
      <rosparam command="load" file="$(find load_params)/params/topics.yaml"/>
    </launch>
    ```
-
 3. Add the following to `params/topics.yaml`:
    ```yaml
    topics:
@@ -203,6 +203,90 @@ sudo apt install ros-foxy-ros1-bridge
   ```
 
 ---
+
+<a name="using-the-ros2-humble-bridge-docker"></a>
+
+## 🐳 Using the ROS2 Humble Bridge (Docker)
+
+For users who wish to leverage **ROS2 Humble** (on Ubuntu 22.04 Jammy) to bridge to a ROS1 Noetic system using Docker, follow these steps:
+
+### Step 1: Build and Extract the ROS1 Bridge Package
+1. **Clone the Builder Repository and Build the Image:**
+   ```bash
+   git clone https://github.com/TommyChangUMD/ros-humble-ros1-bridge-builder.git
+   cd ros-humble-ros1-bridge-builder
+   docker build . -t ros-humble-ros1-bridge-builder
+   ```
+2. **Extract the Precompiled Bridge:**
+   Run the following command on your host (outside any container) to create the `ros-humble-ros1-bridge` folder:
+   ```bash
+   docker run --rm ros-humble-ros1-bridge-builder | tar xvzf -
+   ```
+> [!NOTE]  
+> Remember the absolute path to the extracted folder (e.g., `/home/yourusername/ros-humble-ros1-bridge-builder/ros-humble-ros1-bridge`).
+
+### Step 2: Start a ROS1 Noetic System
+You can run ROS1 Noetic in a Docker container (or on your host) using rocker. For example:
+```bash
+rocker --x11 --user --privileged \
+       --volume /dev/shm:/dev/shm --network=host -- \
+       ros:noetic-ros-base-focal \
+       'bash -c "sudo apt update; sudo apt install -y ros-noetic-rospy-tutorials tilix; tilix"'
+```
+Inside the ROS1 container, start the ROS Master:
+```bash
+source /opt/ros/noetic/setup.bash
+roscore
+```
+
+### Step 3: Run the ROS2 Humble Container with the Bridge Mounted
+Launch a ROS2 Humble container with host networking and mount the extracted bridge folder. Replace the path below with your actual absolute path:
+```bash
+docker run -it --network=host \
+  --name ros2_humble \
+  -v /home/yourusername/ros-humble-ros1-bridge-builder/ros-humble-ros1-bridge:/root/ros-humble-ros1-bridge \
+  osrf/ros:humble-desktop-full
+```
+
+### Step 4: Launch the Bridge Inside the ROS2 Container
+Once inside the container, set up the environment and run the dynamic bridge:
+```bash
+source /opt/ros/humble/setup.bash
+source /root/ros-humble-ros1-bridge/install/local_setup.bash
+ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+```
+> [!TIP]  
+> The `--bridge-all-topics` flag forces bridging for all topics even if no active subscriber exists on one side. This is useful for ensuring topics like `/cmd_vel` are available for teleoperation.
+
+### Step 5: Test the Connection
+1. **On the ROS1 Side:**  
+   In another terminal within the ROS1 container, run:
+   ```bash
+   source /opt/ros/noetic/setup.bash
+   rosrun rospy_tutorials talker
+   ```
+2. **On the ROS2 Side:**  
+   In a separate terminal within the ROS2 container, run a listener (or your teleoperation node):
+   ```bash
+   source /opt/ros/humble/setup.bash
+   ros2 run demo_nodes_cpp listener
+   ```
+   For teleop testing:
+   ```bash
+   ros2 run teleop_twist_keyboard teleop_twist_keyboard
+   ```
+   Verify that topics (e.g., `/cmd_vel`) published in ROS2 are visible on the ROS1 side using:
+   ```bash
+   rostopic list
+   ```
+   and
+   ```bash
+   rostopic echo /cmd_vel
+   ```
+
+---
+
+<a name="connecting-via-vpn"></a>
 
 ## 🌐 Connecting via VPN
 
@@ -281,7 +365,6 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
 
 3. **Launch Ubuntu 20.04** by searching for "Ubuntu 20.04" in the Start Menu and clicking on the application.
 
-
 > [!NOTE]
 > You can also start Ubuntu 20.04 from PowerShell by setting it as the default distro and using the `bash` command:
 > 1. Set Ubuntu 20.04 as the default WSL distro:
@@ -303,6 +386,8 @@ To access the ROSbot remotely over the internet through a VPN connection, follow
 
 ---
 
+<a name="support-and-troubleshooting"></a>
+
 ## 🛠 Support and Troubleshooting
 
 If you encounter any issues:
@@ -314,5 +399,3 @@ If you encounter any issues:
 
 > [!WARNING]  
 > Do not attempt to reconfigure the ROSbot's hardware/software unless instructed by a tutor or professor.
-
----
